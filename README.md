@@ -1,5 +1,6 @@
 # Eksen Çiz (AutoLisp uygulama)
 Bu AutoLISP uygulaması, AutoCAD programında seçilen çember veya yay için dikey ve yatay eksenler çizer.
+![](ss-1.png)
 
 ## Özellikler
 - Çember veya yay için dikey ve yatay eksen çizgisi oluşturur.
