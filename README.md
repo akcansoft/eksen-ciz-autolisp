@@ -4,8 +4,11 @@ Bu AutoLISP uygulaması, AutoCAD programında seçilen çember veya yay için di
 ## Özellikler
 - Çember veya yay için dikey ve yatay eksen çizgisi oluşturur.
 - Eksen çizgilerinin uçları, nesnenin sınırından 3 birim dışarı taşar. Dosyada bu değer değiştirilebilir.
-- Çizimler "EKSEN" adlı bir katmanda yapılır.
-- Eksenler için `CENTER` çizgi tipi ve `4` (cyan = cam göbeği) çizgi rengi kullanılır. `EKSEN` adlı bir katman varsa bu özellikler atanmaz.
+- Çizimler "EKSEN" adlı bir katmanda yapılır.<br>
+Katman yoksa katman oluşturulur ve aşağıdaki özellikler atanır.<br>
+**Çizgi tipi:** `CENTER` <br>
+**Çizgi rengi:** `4` (cyan = cam göbeği)<br>
+Katman varsa **çizgi tipi** ve **çizgi rengi** değiştirilmez.
 - Hata yönetimi ve geri alma (undo) desteği bulunur.
 
 ## Yükleme ve çalıştırma
