@@ -47,7 +47,7 @@ https://mesutakcan.blogspot.com
   )
 
   ; Eksen katmanı yoksa katmanı yap
-  (KatmanYap "EKSEN" "CENTER2" 4) ; Katman adı, çizgi tipi ve çizgi rengi
+  (KatmanYap "EKSEN" "CENTER" 4) ; Katman adı, çizgi tipi ve çizgi rengi
 	
   (setq yariCap (+ yariCap cikinti))
 
