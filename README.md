@@ -16,11 +16,11 @@ Bu AutoLISP uygulaması, AutoCAD programında seçilen çember veya yay için di
    Komut satırına `EKSEN` yazın ve Enter tuşuna basın.
 
 3. **Merkez Noktası veya Nesne Seçimi**  
-   - Çizim alanında bir merkez noktası belirleyin ve eksen yarıçapı uzunluğunu belirtin **veya**  
-   - Bir çember veya yay nesnesi seçin.
+Komut, sizden merkez noktasını belirlemenizi veya bir nesne seçmenizi isteyecektir.
+Merkez noktasını manuel olarak girebilir veya bir çember ya da yay seçebilirsiniz.
 
-4. **Sonuç**  
-   - Seçili Çember veya yaya dikey ve yatay eksenler çizilecektir.
+4. **Eksenlerin Çizilmesi:** <br>
+Program, seçilen nesnenin merkezine göre, sınırlarından 3 birim taşan yatay ve dikey eksen çizgileri çizecektir.
 
 ## Dosyalar
 - **Kod Dosyası:** [`eksen-ciz.lsp`](eksen-ciz.lsp)
