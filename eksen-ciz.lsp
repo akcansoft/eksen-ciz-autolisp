@@ -1,6 +1,6 @@
-;| EKSEN ÇÝZ
-Çember veya yay'a dikey ve yatay eksenleri çizer
-Eksen çizgisi çýkýntý mesafesi 3 alýnmýþtýr.
+;| EKSEN Ã‡Ä°Z
+Ã‡ember veya yay'a dikey ve yatay eksenleri Ã§izer
+Eksen Ã§izgisi Ã§Ä±kÄ±ntÄ± mesafesi 3 alÄ±nmÄ±ÅŸtÄ±r.
 
 09/12/2024
 Mesut Akcan
@@ -21,37 +21,37 @@ https://mesutakcan.blogspot.com
   )
 	
   (setq
-		doc (vla-get-activedocument (vlax-get-acad-object)) ; aktif çizim
-		cikinti 3 ; eksen çizgisi çýkýntýsý
+		doc (vla-get-activedocument (vlax-get-acad-object)) ; aktif Ã§izim
+		cikinti 3 ; eksen Ã§izgisi Ã§Ä±kÄ±ntÄ±sÄ±
 	)
   (vla-startundomark doc)
 
-  ; Kullanýcýdan merkez noktasý al veya nesne seç
-  (if (setq merkez (getpoint "\nMerkez noktasý belirle veya <Nesne seç>: "))
-    ;Merkez noktasý seçildi ise
-    (setq yariCap (getdist merkez "\nUzaklýk:"))
-    ;Nesne seçilecekse
+  ; KullanÄ±cÄ±dan merkez noktasÄ± al veya nesne seÃ§
+  (if (setq merkez (getpoint "\nMerkez noktasÄ± belirle veya <Nesne seÃ§>: "))
+    ;Merkez noktasÄ± seÃ§ildi ise
+    (setq yariCap (getdist merkez "\nUzaklÄ±k:"))
+    ;Nesne seÃ§ilecekse
     (progn
-      (while ; Yay veya çember seçildiyse
+      (while ; Yay veya Ã§ember seÃ§ildiyse
         (not
           (and
-            (setq ent (car (entsel "\nÇember veya yay seç: ")))
+            (setq ent (car (entsel "\nÃ‡ember veya yay seÃ§: ")))
             (member (cdr (assoc 0 (entget ent))) '("ARC" "CIRCLE"))
           )
         )
-        (prompt "\n*Lütfen çember veya yay nesnesi seçiniz!*")
+        (prompt "\n*LÃ¼tfen Ã§ember veya yay nesnesi seÃ§iniz!*")
       )
       (setq merkez (cdr (assoc 10 (entget ent)))) ; Merkez nokta
-      (setq yariCap (cdr (assoc 40 (entget ent)))) ; Yarýçap
+      (setq yariCap (cdr (assoc 40 (entget ent)))) ; YarÄ±Ã§ap
     )
   )
 
-  ; Eksen katmaný yoksa katmaný yap
-  (KatmanYap "EKSEN" "CENTER" 4) ; Katman adý, çizgi tipi ve çizgi rengi
+  ; Eksen katmanÄ± yoksa katmanÄ± yap
+  (KatmanYap "EKSEN" "CENTER" 4) ; Katman adÄ±, Ã§izgi tipi ve Ã§izgi rengi
 	
   (setq yariCap (+ yariCap cikinti))
 
-	; Eksenleri çiz
+	; Eksenleri Ã§iz
 	(foreach aci (list 0 (/ pi 2))
 	  (CizgiCiz (polar merkez aci yaricap) (polar merkez (+ pi aci) yaricap))
 	)
@@ -60,32 +60,32 @@ https://mesutakcan.blogspot.com
   (princ)
 )
 
-; Çizgi çiz
+; Ã‡izgi Ã§iz
 ; ---------
 (defun CizgiCiz (n1 n2)
   (entmake
     (list
       (cons 0 "LINE") ; Nesne tipi
       (cons 8 "EKSEN") ; Katman
-      (cons 10 (trans n1 1 0)) ; Baþlangýç noktasý
-      (cons 11 (trans n2 1 0)) ; Bitiþ noktasý
+      (cons 10 (trans n1 1 0)) ; BaÅŸlangÄ±Ã§ noktasÄ±
+      (cons 11 (trans n2 1 0)) ; BitiÅŸ noktasÄ±
     )
   )
 )
 
-; Katman oluþtur
+; Katman oluÅŸtur
 ; --------------
 (defun KatmanYap (katmanAdi cizgiTipi cizgiRengi)
-  ; Çizgi tipini kontrol et
-  (if (not (tblsearch "LTYPE" cizgiTipi)) ; Çizgi tipi yoksa
+  ; Ã‡izgi tipini kontrol et
+  (if (not (tblsearch "LTYPE" cizgiTipi)) ; Ã‡izgi tipi yoksa
     (progn
-      (command "-linetype" "load" cizgiTipi "acad.lin" "") ; Çizgi tipini yükle
+      (command "-linetype" "load" cizgiTipi "acad.lin" "") ; Ã‡izgi tipini yÃ¼kle
       (if (not (tblsearch "LTYPE" cizgiTipi))
-        (princ (strcat "\n" cizgiTipi " çizgi tipi yüklenemedi."))
+        (princ (strcat "\n" cizgiTipi " Ã§izgi tipi yÃ¼klenemedi."))
       )
     )
   )
-	; Katmaný kontrol et
+	; KatmanÄ± kontrol et
   (if (not (tblsearch "LAYER" katmanAdi)) ; Katman yoksa
     (entmake ; Katman yap
       (list
@@ -93,10 +93,10 @@ https://mesutakcan.blogspot.com
         (cons 100 "AcDbSymbolTableRecord")
         (cons 100 "AcDbLayerTableRecord")				
 				(cons 70 0) ; Katman durumu ON
-        (cons 2 katmanAdi) ; Katman adý
-        (cons 6 cizgiTipi) ; Çizgi tipi
-        (cons 62 cizgiRengi) ; Çizgi rengi
-				(cons 370 -3) ; Çizgi kalýnlýðý. Default
+        (cons 2 katmanAdi) ; Katman adÄ±
+        (cons 6 cizgiTipi) ; Ã‡izgi tipi
+        (cons 62 cizgiRengi) ; Ã‡izgi rengi
+				(cons 370 -3) ; Ã‡izgi kalÄ±nlÄ±ÄŸÄ±. Default
       )
     )
   )
