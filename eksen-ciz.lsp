@@ -3,7 +3,7 @@
 Eksen çizgisi çýkýntý mesafesi 3 alýnmýþtýr.
 
 09/12/2024
-Güncelleme: 10/12/2024
+Güncelleme: 11/12/2024
 
 Mesut Akcan
 makcan@gmail.com
@@ -33,39 +33,43 @@ https://mesutakcan.blogspot.com
 
 	; Çýkýþ seçilene kadar sonsuz döngü
 	(while (null cikis)
-  	; Kullanýcýdan merkezNokta noktasý al veya nesne seç
+  	; Seçenekler:
+  	; 1-Merkez noktasý týkla
+		; 2-Nesne seç (Varsayýlan seçenek)
+		; 3-Çýkýþ
 		(initget "Nesne Çýkýþ")
 		(setq merkezNokta (getpoint "\nMerkez noktasý belirle [Nesne seç/Çýkýþ] <Nesne seç>: "))
 
 		(cond
-			; Çýkýþ seçildi ise
-			; ------------------
-			((= merkezNokta "Çýkýþ") (setq cikis T))
-			
-			;merkezNokta noktasý seçildi ise
+			;1-Merkez noktasý týklandý ise
 			;--------------------------
 			((= 'LIST (type merkezNokta))
 			 (setq yariCap (getdist merkezNokta "\nUzaklýk:"))
 			)
 			
-			; Nesne seç seçildi ise
-			;-----------------------
+			;2-Çýkýþ seçildi ise
+			; ------------------
+			((= merkezNokta "Çýkýþ") (setq cikis T))
+			
+			;3-Enter'e basýldý veya "Nesne seç" seçildi ise
+			;---------------------------------------------
 			(T 
-	      (while ; Yay veya çember seç
+	      (while ; Yay veya çember seçene kadar döngü
 	        (not
 	          (and
 	            (setq ent (car (entsel "\nÇember veya yay seç: ")))
 	            (member (cdr (assoc 0 (entget ent))) '("ARC" "CIRCLE"))
 	          )
 	        )
-	        (prompt "\n*Lütfen çember veya yay nesnesi seçiniz!*")
+	        (prompt "\n*Lütfen çember veya yay seçiniz!*")
 	      )
 	      (setq
-					merkezNokta (cdr (assoc 10 (entget ent)))   ; Merkez nokta
-					yariCap (cdr (assoc 40 (entget ent))) ; Yarýçap
+					merkezNokta (trans (cdr (assoc 10 (entget ent))) ent 1) ; Nesne merkez noktasý
+					yariCap (cdr (assoc 40 (entget ent))) ; Nesne yarýçapý
 				)
 			) ; T
-		) ; cond	 
+		) ; cond
+		
 		(if (/= merkezNokta "Çýkýþ")
 			(progn
 				(setq yariCap (+ yariCap cikinti))
@@ -86,8 +90,8 @@ https://mesutakcan.blogspot.com
     (list
       (cons 0 "LINE") ; Nesne tipi
       (cons 8 "EKSEN") ; Katman
-      (cons 10 n1) ; Baþlangýç noktasý
-      (cons 11 n2) ; Bitiþ noktasý
+      (cons 10 (trans n1 1 0)) ; Baþlangýç noktasý
+      (cons 11 (trans n2 1 0)) ; Bitiþ noktasý
     )
   )
 )
@@ -120,3 +124,4 @@ https://mesutakcan.blogspot.com
     )
   )
 )
+;---
