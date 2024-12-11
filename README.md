@@ -4,11 +4,12 @@ Bu AutoLISP uygulaması, AutoCAD programında seçilen çember veya yay için di
 
 ## Özellikler
 - Çember veya yay için dikey ve yatay eksen çizgisi oluşturur.
-- Eksen çizgilerinin uçları, nesnenin sınırından 3 birim dışarı taşar. Dosyada bu değer değiştirilebilir.
-- Çizimler "EKSEN" adlı bir katmanda yapılır.<br>
+- Eksen çizgilerinin uçları, nesnenin sınırından `3` birim dışarı taşar. Dosyada bu değer değiştirilebilir.
+- Çizimler `EKSEN` adlı bir katmanda yapılır.<br>
 Katman yoksa katman oluşturulur ve aşağıdaki özellikler atanır.<br>
 **Çizgi tipi:** `CENTER` <br>
-**Çizgi rengi:** `4` (cyan = cam göbeği)<br>
+**Çizgi rengi:** `4`
+$${\color{cyan}■}$$ (cyan = cam göbeği)<br>
 Katman varsa **çizgi tipi** ve **çizgi rengi** değiştirilmez.
 - Hata yönetimi ve geri alma (undo) desteği bulunur.
 
@@ -17,20 +18,29 @@ Katman varsa **çizgi tipi** ve **çizgi rengi** değiştirilmez.
    `EKSEN-CIZ.LSP` dosyasını AutoCAD'e yüklemek için komut satırına `APPLOAD` yazın ve dosyayı seçin.
 
 2. **Komutu Çalıştırma**  
-   Komut satırına `EKSEN` yazın ve Enter tuşuna basın.
+   Komut satırına `EKSEN` yazın ve `Enter` tuşuna basın.
 
 3. **Merkez Noktası veya Nesne Seçimi**  
-Komut, sizden merkez noktasını belirlemenizi veya bir nesne seçmenizi isteyecektir.
-Merkez noktasını manuel olarak girebilir veya bir çember ya da yay seçebilirsiniz.
+Komut, aşağıdaki seçenekleri sunacaktır
+- Merkez noktası belirle
+- Nesne seç
+- Çıkış<br>
+Seçeneklerden seçme işlemini;
+- Komut satırında üzerinde tıklayarak,
+- Menü baş harfini klavyeden girerek
+- Çizim alanında sağ tıklayıp menüden tıklayarak <br>
+verebilrsiniz.<br>
+`Nesne seç` varsayılan seçenektir. `Enter`ile seçilebilir.<br>
+Bir seçnek seçilmezse merkez noktası ve eksen yarıçapı belirlenir.
 
-4. **Eksenlerin Çizilmesi:** <br>
-Program, seçilen nesnenin merkezine göre, sınırlarından 3 birim taşan yatay ve dikey eksen çizgileri çizecektir.
+5. **Eksenlerin Çizilmesi:** <br>
+Program, seçilen nesnenin merkezine göre, sınırlarından 3 birim taşan(çıkıntı) yatay ve dikey eksen çizgileri çizecektir. Çıkıntı değerini `lsp` dosyadan değiştirebilirsiniz.
 
 ## Dosyalar
 - **Kod Dosyası:** [`eksen-ciz.lsp`](eksen-ciz.lsp)
 
 ## Lisans
-Bu uygulama **Mesut Akcan** tarafından geliştirilmiştir ve eğitim amaçlı kullanımı serbesttir. Kaynak belirtmeden paylaşılmaz.
+Bu uygulama **Mesut Akcan** tarafından geliştirilmiştir. Kaynak belirtmeden paylaşılamaz. Ücretsizdir. Satılamaz.
 
 ## İletişim
 - **E-posta:** makcan@gmail.com  
