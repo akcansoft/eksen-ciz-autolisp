@@ -5,11 +5,11 @@ Bu AutoLISP uygulaması, AutoCAD programında seçilen çember veya yay için di
 ## Özellikler
 - Çember veya yay için dikey ve yatay eksen çizgisi oluşturur.
 - Eksen çizgilerinin uçları, nesnenin sınırından `3` birim dışarı taşar. Dosyada bu değer değiştirilebilir.
-- Çizimler `EKSEN` adlı bir katmanda yapılır.<br>
-Katman yoksa katman oluşturulur ve aşağıdaki özellikler atanır.<br>
-**Çizgi tipi:** `CENTER` <br>
+- Çizimler `EKSEN` adlı bir katmanda yapılır.\
+Katman yoksa katman oluşturulur ve aşağıdaki özellikler atanır.\
+**Çizgi tipi:** `CENTER` \
 **Çizgi rengi:** `4`
-$${\color{cyan}■}$$ (cyan = cam göbeği)<br>
+$${\color{cyan}■}$$ (cyan = cam göbeği)\
 Katman varsa **çizgi tipi** ve **çizgi rengi** değiştirilmez.
 - Hata yönetimi ve geri alma (undo) desteği bulunur.
 
@@ -24,16 +24,21 @@ Katman varsa **çizgi tipi** ve **çizgi rengi** değiştirilmez.
 Komut, aşağıdaki seçenekleri sunacaktır
 - Merkez noktası belirle
 - Nesne seç
-- Çıkış<br>
+- Çıkış
+
 Seçeneklerden seçme işlemini;
 - Komut satırında üzerinde tıklayarak,
 - Menü baş harfini klavyeden girerek
-- Çizim alanında sağ tıklayıp menüden tıklayarak <br>
-verebilrsiniz.<br>
-`Nesne seç` varsayılan seçenektir. `Enter`ile seçilebilir.<br>
-Bir seçnek seçilmezse merkez noktası ve eksen yarıçapı belirlenir.
+- Çizim alanında sağ tıklayıp menüden tıklayarak \
+verebilrsiniz.
 
-5. **Eksenlerin Çizilmesi:** <br>
+`Nesne seç` varsayılan seçenektir. `Enter`ile seçilebilir. `Nesne seç` ile nesne ya da nesneler seçilir. Seçimi tamamlamak için `Enter` tuşuna basılır. Seçilen nesnelere eksenler çizilir.
+
+Bir seçnek seçilmezse merkez noktası ardından eksen yarıçapı belirlenir.
+
+Program sonsuz döngü ile devam eder. Döngüden çıkmak için `Çıkış` seçeneğini seçin veya `ESC` tuşu ile çıkın.
+
+5. **Eksenlerin Çizilmesi:**\
 Program, seçilen nesnenin merkezine göre, sınırlarından 3 birim taşan(çıkıntı) yatay ve dikey eksen çizgileri çizecektir. Çıkıntı değerini `lsp` dosyadan değiştirebilirsiniz.
 
 ## Dosyalar
