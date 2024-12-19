@@ -43,7 +43,9 @@ Program sonsuz döngü ile devam eder. Döngüden çıkmak için `Çıkış` se�
 Program, seçilen nesnenin merkezine göre, sınırlarından ayarlanan çıkıntı değeri kadar taşan yatay ve dikey eksen çizgileri çizecektir. Çıkıntı değeri menüden ayarlanabilir. Başlangıç değeri: `3`
 
 ## Dosyalar
-- **Kod Dosyası:** [`eksen-ciz.lsp`](eksen-ciz.lsp)
+- **Kod Dosyaları:**\
+   - [`eksen-ciz.lsp`](eksen-ciz.lsp) Türkçe
+   - [`eksen-ciz-ENG.lsp`](eksen-ciz-ENG.lsp) English version
 
 ## Lisans
 Bu uygulama **Mesut Akcan** tarafından geliştirilmiştir. Kaynak belirtmeden paylaşılamaz. Ücretsizdir. Satılamaz.
