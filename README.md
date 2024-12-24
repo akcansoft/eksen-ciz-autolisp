@@ -4,7 +4,7 @@ Bu AutoLISP uygulaması, AutoCAD programında seçilen çember veya yay için di
 
 ## Özellikler
 - Çember veya yay için dikey ve yatay eksen çizgisi oluşturur.
-- Eksen çizgilerinin uçları, ayarlanan değer kadar dışarı taşar. Çıkıntı ayarlanmadıysa varsayılan değer `3` birimdir
+- Eksen çizgilerinin uçları, ayarlanan değer kadar dışarı taşar. Çıkıntı ayarlanmadıysa varsayılan değer `3` birimdir. Çıkıntı menü ile ayarlanabilir. Negatif değer çıkıntı yerine girinti oluşturur.
 - Çizimler `EKSEN` adlı bir katmanda yapılır.\
 Katman yoksa katman eklenir ve aşağıdaki özellikler atanır.\
 **Çizgi tipi:** `CENTER` \
@@ -23,17 +23,18 @@ Katman varsa **çizgi tipi** ve **çizgi rengi** değiştirilmez.
 3. **Merkez Noktası veya Nesne Seçimi**  
 Komut, aşağıdaki seçenekleri sunacaktır
 - Merkez noktası belirle
-- Çıkıntı ayarla
 - Nesne seç
+- Çıkıntı ayarla
+- Geri al
 - Çıkış
 
 Seçeneklerden seçme işlemini;
 - Komut satırında üzerinde tıklayarak,
-- Menü baş harfini klavyeden girerek
+- Menüdeki büyük harfi klavyeden girerek
 - Çizim alanında sağ tıklayıp menüden tıklayarak \
 verebilrsiniz.
 
-`Nesne seç` varsayılan seçenektir. `Enter`ile seçilebilir. `Nesne seç` ile nesne ya da nesneler seçilir. Seçimi tamamlamak için `Enter` tuşuna basılır. Seçilen nesnelere eksenler çizilir.
+`Nesne seç` varsayılan seçenektir. `Enter`ile seçilebilir. `Nesne seç` ile nesne ya da nesneler(çember veya yaylar) seçilir. Seçimi tamamlamak için `Enter` tuşuna basılır. Seçilen nesnelere eksenler çizilir.
 
 Bir seçnek seçilmezse merkez noktası ardından eksen yarıçapı belirlenir.
 
