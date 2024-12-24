@@ -1,8 +1,11 @@
-;| EKSEN ÇÝZ
+;| EKSEN
 Çember veya yay'a dikey ve yatay eksenleri çizer
+Kullanýcý, nesne seçimi veya merkez noktasý belirleme ile eksen çizebilir.
+Çýkýntý mesafesi ayarlanabilir.
+Son iþlem geri alýnabilir.
 
-12/12/2024
-Güncelleme: 19/12/2024
+12/12/2024 - Ýlk sürüm
+24/12/2024 - Son güncelleme
 
 Mesut Akcan
 makcan@gmail.com
@@ -12,18 +15,18 @@ https://mesutakcan.blogspot.com
 |;
 
 (vl-load-com)
+(setq
+  doc (vla-get-activedocument (vlax-get-acad-object)) ; aktif çizim
+  cikinti 3 ; Çýkýntý mesafesi
+)
 
-(defun c:EKSEN (/ cikis doc edata ent merkez-nokta n ss) 
+(defun c:EKSEN (/ cikis edata ent menu-secimi n ss) 
   ; Çalýþma sýrasýnda hata olursa
   (defun *error* (msg) 
     (if doc (vla-endundomark doc))
     (if msg (princ (strcat "\nHata: " msg)))
     (princ)
   )
-  ; Çýkýntý ayarlanmamýþsa = 3
-  (if (null cikinti) (setq cikinti 3)) ; Çýkýntý mesafesi
-  (setq doc (vla-get-activedocument (vlax-get-acad-object))) ; aktif çizim
-  (vla-startundomark doc) ; Geri alma baþlat
 
   ; Eksen katmaný yoksa ekle
   (KatmanEkle "EKSEN" "CENTER" 4) ; Katman adý, çizgi tipi ve çizgi rengi
@@ -31,48 +34,50 @@ https://mesutakcan.blogspot.com
   ; Çýkýþ seçilene kadar sonsuz döngü
   (while (null cikis) 
     ; Seçenekler:
+		; -----------
     ; 1-Merkez noktasý týkla
     ; 2-Çýkýntý ayarla
     ; 3-Nesne seç (Varsayýlan seçenek)
-    ; 4-Çýkýþ
+    ; 4-Geri al
+    ; 5-Çýkýþ
     (prompt (strcat "\nÇýkýntý:" (rtos cikinti))) ; Çýkýntý mesafesi
-    (initget "Nesne Ayarla Çýkýþ") ; Menü elemanlarý
-    (setq merkez-nokta ; Merkez noktasý
+    (initget "Nesne Ayarla Geri Çýkýþ") ; Menü elemanlarý
+    (setq menu-secimi ; Menü seçimi
           (getpoint 
-            "\nMerkez noktasý belirle [Nesne seç/çýkýntý Ayarla/Çýkýþ] <Nesne seç>: "
+            "\nMerkez noktasý belirle [Nesne seç/çýkýntý Ayarla/Geri al/Çýkýþ] <Nesne seç>: "
           )
     )
 
     (cond 
       ;1-Merkez noktasý týklandý ise
       ;-----------------------------
-      ((= 'LIST (type merkez-nokta)) ; Dönen deðer liste ise
-       (EksenCiz merkez-nokta (getdist merkez-nokta "\nEksen yarýçapý:") cikinti)
+      ((= 'LIST (type menu-secimi)) ; Dönen deðer liste ise
+       (EksenCiz menu-secimi (getdist menu-secimi "\nEksen yarýçapý:") cikinti)
       )
 
-      ;2-Çýkýntý ayarla
-      ((= merkez-nokta "Ayarla") ; Dönen deðer "Ayarla" ise
+      ;2-"Çýkýntý ayarla" seçildi ise
+      ((= menu-secimi "Ayarla") ; Dönen deðer "Ayarla" ise
        ; Çýkýntý mesafesini ayarla
        (setq cikinti
         (cond 
-          ((getdist           
-            (strcat 
-              "\nÇýkýntý mesafesi <"
-              (rtos (cond (cikinti) (3)))
-              ">: "
-            ))
-          )
-          (cikinti) ; Önceki deðer varsa Enter
+          ((getdist (strcat "\nÇýkýntý mesafesi <" (rtos (cond (cikinti) (3))) ">: ")))
+          (cikinti) ; Önceki deðer varken Enter
           (3) ; Ýlk kullanýmda Enter
         );cond
        );setq
       )
 
-      ;3-Çýkýþ seçildi ise
-      ; ------------------
-      ((= merkez-nokta "Çýkýþ") (setq cikis T))
+      ;3-"Geri al" seçildi ise
+      ; ---------------------
+      ((= menu-secimi "Geri")
+       (command "._UNDO" "1")
+      )
 
-      ;4-Enter'e basýldý veya "Nesne seç" seçildi ise
+      ;4-"Çýkýþ" seçildi ise
+      ; ------------------
+      ((= menu-secimi "Çýkýþ") (setq cikis T))
+
+      ;5-"Nesne seç" seçildi veya Enter'e basýldý ise
       ;---------------------------------------------
       (T
        (if (setq ss (ssget '((0 . "CIRCLE,ARC"))))  ; Yay veya çember seç
@@ -83,7 +88,6 @@ https://mesutakcan.blogspot.com
              (setq ent (ssname ss (setq n (1- n))) ; seçim listesindeki varlýk adý
                    edata (entget ent) ; Varlýk verileri. DXF bilgiler
              )
-             ; (EksenCiz merkezNokta yariCap)
              (EksenCiz (trans (cdr (assoc 10 edata)) ent 1) (cdr (assoc 40 edata)) cikinti)
            );repeat
          );progn
@@ -107,6 +111,7 @@ https://mesutakcan.blogspot.com
 (defun EksenCiz (mn r c)  ; Merkez nokta, yarýçap, çýkýntý
   (setq r (+ r c)) ; Çýkýntýyý yarýçapa ekle
   ; Eksenleri çiz
+	(vla-startundomark doc)
   ; 0 ve 90 derece açýlarý için döngü
   (foreach aci (list 0 (/ pi 2))
     (entmake 
@@ -118,6 +123,7 @@ https://mesutakcan.blogspot.com
       );list
     );entmake
   );foreach
+	(vla-endundomark doc)
 );defun
 
 ; Katman Ekle
