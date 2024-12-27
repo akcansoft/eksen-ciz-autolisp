@@ -5,7 +5,9 @@ Kullanýcý, nesne seçimi veya merkez noktasý belirleme ile eksen çizebilir.
 Son iþlem geri alýnabilir.
 
 12/12/2024 - Ýlk sürüm
-24/12/2024 - Son güncelleme
+27/12/2024 - Son güncelleme
+
+R13
 
 Mesut Akcan
 makcan@gmail.com
@@ -20,7 +22,7 @@ https://mesutakcan.blogspot.com
   cikinti 3 ; Çýkýntý mesafesi
 )
 
-(defun c:EKSEN (/ cikis edata ent menu-secimi n ss) 
+(defun c:EKSEN (/ cikis edata ent menu-secimi n ss eksensayisi menutxt) 
   ; Çalýþma sýrasýnda hata olursa
   (defun *error* (msg) 
     (if doc (vla-endundomark doc))
@@ -30,7 +32,8 @@ https://mesutakcan.blogspot.com
 
   ; Eksen katmaný yoksa ekle
   (KatmanEkle "EKSEN" "CENTER" 4) ; Katman adý, çizgi tipi ve çizgi rengi
-
+  (setq eksensayisi 0) ; Eksen sayýsý
+  
   ; Çýkýþ seçilene kadar sonsuz döngü
   (while (null cikis) 
     ; Seçenekler:
@@ -42,10 +45,9 @@ https://mesutakcan.blogspot.com
     ; 5-Çýkýþ
     (prompt (strcat "\nÇýkýntý:" (rtos cikinti))) ; Çýkýntý mesafesi
     (initget "Nesne Ayarla Geri Çýkýþ") ; Menü elemanlarý
+    (setq menutxt (strcat "[Nesne seç/çýkýntý Ayarla" (if (> eksensayisi 0) "/Geri al" "") "/Çýkýþ]"))
     (setq menu-secimi ; Menü seçimi
-          (getpoint 
-            "\nMerkez noktasý belirle [Nesne seç/çýkýntý Ayarla/Geri al/Çýkýþ] <Nesne seç>: "
-          )
+          (getpoint (strcat "\nMerkez noktasý belirle " menutxt " <Nesne seç>: "))
     )
 
     (cond 
@@ -70,7 +72,13 @@ https://mesutakcan.blogspot.com
       ;3-"Geri al" seçildi ise
       ; ---------------------
       ((= menu-secimi "Geri")
-       (command "._UNDO" "1")
+       (if eksensayisi ; Eksen çizildiyse
+         (progn
+           (repeat 2 (entdel (entlast))); Son iki çizgiyi sil
+           (setq eksensayisi (1- eksensayisi)); Eksen sayýsýný azalt
+         )
+         (prompt "\n*Eksen çizilmedi!*")
+       );if
       )
 
       ;4-"Çýkýþ" seçildi ise
@@ -124,6 +132,7 @@ https://mesutakcan.blogspot.com
     );entmake
   );foreach
 	(vla-endundomark doc)
+  (setq eksensayisi (1+ eksensayisi)); Eksen sayýsýný artýr
 );defun
 
 ; Katman Ekle
