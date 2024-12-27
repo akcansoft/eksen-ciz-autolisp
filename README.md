@@ -14,34 +14,31 @@ Katman varsa **çizgi tipi** ve **çizgi rengi** değiştirilmez.
 - Hata yönetimi ve geri alma (undo) desteği bulunur.
 
 ## Yükleme ve çalıştırma
-1. **AutoCAD'e Yükleme**  
-   `EKSEN-CIZ.LSP` dosyasını AutoCAD'e yüklemek için komut satırına `APPLOAD` yazın ve dosyayı seçin.
+### Yükleme
+AutoCAD komut satırına `APPLOAD` yazın, `EKSEN-CIZ.LSP` dosyasını seçip Load tıklayın.
 
-2. **Komutu Çalıştırma**  
-   Komut satırına `EKSEN` yazın ve `Enter` tuşuna basın.
+### Komutu Çalıştırma
+AutoCAD Komut satırına `EKSEN` yazıp `Enter` tuşuna basın.
 
-3. **Merkez Noktası veya Nesne Seçimi**  
-Komut, aşağıdaki seçenekleri sunacaktır
+### Menü elemanları
+`EKSEN` komutu çalıştırıldığında menüde aşağıdaki seçenekler çıkar
 - Merkez noktası belirle
 - Nesne seç
 - Çıkıntı ayarla
 - Geri al
 - Çıkış
 
-Seçeneklerden seçme işlemini;
-- Komut satırında üzerinde tıklayarak,
+### Menü elamanını seçme
+- Komut satırında üzerinde tıklayarak
 - Menüdeki büyük harfi klavyeden girerek
-- Çizim alanında sağ tıklayıp menüden tıklayarak \
-verebilrsiniz.
+- Çizim alanında sağ tıklayıp menüden tıklayarak
 
-`Nesne seç` varsayılan seçenektir. `Enter`ile seçilebilir. `Nesne seç` ile nesne ya da nesneler(çember veya yaylar) seçilir. Seçimi tamamlamak için `Enter` tuşuna basılır. Seçilen nesnelere eksenler çizilir.
-
-Bir seçnek seçilmezse merkez noktası ardından eksen yarıçapı belirlenir.
-
-Program sonsuz döngü ile devam eder. Döngüden çıkmak için `Çıkış` seçeneğini seçin veya `ESC` tuşu ile çıkın.
-
-5. **Eksenlerin Çizilmesi:**\
-Program, seçilen nesnenin merkezine göre, sınırlarından ayarlanan çıkıntı değeri kadar taşan yatay ve dikey eksen çizgileri çizecektir. Çıkıntı değeri menüden ayarlanabilir. Başlangıç değeri: `3`
+### Menü elemanlarının işlevleri
+- **Merkez noktası belirle**. Bir seçnek seçilmezse merkez noktası ardından eksen yarıçapı belirlenir. Belirlenen merkeze eksenler çizilir.
+- **Nesne seç**. Varsayılan seçenektir. `Enter` veya `Boşluk` ile de seçilebilir. Çember(ler) ve/veya yay(lar) seçilir. Seçimi tamamlamak için `Enter` tuşuna basılır. Seçilen nesnelere eksenler çizilir.
+- **Çıkıntı ayarla**. Başlangıç değeri `3` birimdir. Çıkıntı miktarı ayarlanbilir. Negatif değerler ters çıkıntı(girinti) oluşturur.
+- **Geri al**. Son çizilen dikey ve yatay ekseni iptal eder.
+- **Çıkış**. Program sonsuz döngü ile devam eder. Döngüden çıkmak için `Çıkış` seçeneğini seçin veya `ESC` tuşuna basın.
 
 ## Dosyalar
 - **Kod Dosyaları:**\
