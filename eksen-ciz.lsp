@@ -72,13 +72,10 @@ https://mesutakcan.blogspot.com
       ;3-"Geri al" seçildi ise
       ; ---------------------
       ((= menu-secimi "Geri")
-       (if eksensayisi ; Eksen çizildiyse
-         (progn
-           (repeat 2 (entdel (entlast))); Son iki çizgiyi sil
-           (setq eksensayisi (1- eksensayisi)); Eksen sayýsýný azalt
-         )
-         (prompt "\n*Eksen çizilmedi!*")
-       );if
+       (progn
+         (repeat 2 (entdel (entlast))); Son iki çizgiyi sil
+         (setq eksensayisi (1- eksensayisi)); Eksen sayýsýný azalt
+       )
       )
 
       ;4-"Çýkýþ" seçildi ise
