@@ -142,7 +142,7 @@ https://mesutakcan.blogspot.com
   ; Çizgi tipini kontrol et
   (if (not (tblsearch "LTYPE" cizgi-tipi))  ; Çizgi tipi yoksa
     (progn 
-      (command "-linetype" "load" cizgi-tipi "acad.lin" "") ; Çizgi tipini yükle
+      (command "-linetype" "load" cizgi-tipi "acadiso.lin" "") ; Çizgi tipini yükle
       (if (not (tblsearch "LTYPE" cizgi-tipi)) ; Çizgi tipi yüklenemediyse
         (princ (strcat "\n" cizgi-tipi " çizgi tipi yüklenemedi."))
       );if
