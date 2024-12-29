@@ -8,8 +8,7 @@ Bu AutoLISP uygulaması, AutoCAD programında seçilen çember veya yay için di
 - Çizimler `EKSEN` adlı bir katmanda yapılır.\
 Katman yoksa katman eklenir ve aşağıdaki özellikler atanır.\
 **Çizgi tipi:** `CENTER` \
-**Çizgi rengi:** `4`
-$${\color{cyan}■}$$ (cyan = cam göbeği)\
+**Çizgi rengi:** `4` $${\color{cyan}■}$$ (cyan = cam göbeği)\
 Katman varsa **çizgi tipi** ve **çizgi rengi** değiştirilmez.
 - Hata yönetimi ve geri alma (undo) desteği bulunur.
 
@@ -33,17 +32,12 @@ AutoCAD Komut satırına `EKSEN` yazıp `Enter` tuşuna basın.
 - Menüdeki büyük harfi klavyeden girerek
 - Çizim alanında sağ tıklayıp menüden tıklayarak
 
-### Menü elemanlarının işlevleri
+## Menü elemanlarının işlevleri
 - **Merkez noktası belirle**. Bir seçnek seçilmezse merkez noktası ardından eksen yarıçapı belirlenir. Belirlenen merkeze eksenler çizilir.
 - **Nesne seç**. Varsayılan seçenektir. `Enter` veya `Boşluk` ile de seçilebilir. Çember(ler) ve/veya yay(lar) seçilir. Seçimi tamamlamak için `Enter` tuşuna basılır. Seçilen nesnelere eksenler çizilir.
 - **Çıkıntı ayarla**. Başlangıç değeri `3` birimdir. Çıkıntı miktarı ayarlanbilir. Negatif değerler ters çıkıntı(girinti) oluşturur.
 - **Geri al**. Son çizilen dikey ve yatay ekseni iptal eder.
 - **Çıkış**. Program sonsuz döngü ile devam eder. Döngüden çıkmak için `Çıkış` seçeneğini seçin veya `ESC` tuşuna basın.
-
-## Dosyalar
-- **Kod Dosyaları:**\
-   - [`eksen-ciz.lsp`](eksen-ciz.lsp) Türkçe
-   - [`eksen-ciz-ENG.lsp`](eksen-ciz-ENG.lsp) English version
 
 ## Lisans
 Bu uygulama **Mesut Akcan** tarafından geliştirilmiştir. Kaynak belirtmeden paylaşılamaz. Ücretsizdir. Satılamaz.
