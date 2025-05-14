@@ -5,9 +5,9 @@ Kullanýcý, nesne seçimi veya merkez noktasý belirleme ile eksen çizebilir.
 Son iþlem geri alýnabilir.
 
 12/12/2024 - Ýlk sürüm
-27/12/2024 - Son güncelleme
+14/05/2025 - Son güncelleme
 
-R13
+R14
 
 Mesut Akcan
 makcan@gmail.com
@@ -17,22 +17,20 @@ https://mesutakcan.blogspot.com
 |;
 
 (vl-load-com)
-(setq
-  doc (vla-get-activedocument (vlax-get-acad-object)) ; aktif çizim
-  cikinti 3 ; Çýkýntý mesafesi
-)
+(setq cikinti 3) ; Çýkýntý mesafesi
 
-(defun c:EKSEN (/ cikis edata ent menu-secimi n ss eksensayisi menutxt) 
+(defun c:EKSEN (/ cikis doc edata eksenSayisi ent menuSecimi menuTxt n ss yeniCikinti) 
+  (setq doc (vla-get-activedocument (vlax-get-acad-object)))  ; aktif çizim
   ; Çalýþma sýrasýnda hata olursa
   (defun *error* (msg) 
-    (if doc (vla-endundomark doc))
+    (vla-endundomark doc)
     (if msg (princ (strcat "\nHata: " msg)))
     (princ)
   )
 
   ; Eksen katmaný yoksa ekle
   (KatmanEkle "EKSEN" "CENTER" 4) ; Katman adý, çizgi tipi ve çizgi rengi
-  (setq eksensayisi 0) ; Eksen sayýsý
+  (setq eksenSayisi 0) ; Eksen sayýsý
   
   ; Çýkýþ seçilene kadar sonsuz döngü
   (while (null cikis) 
@@ -40,47 +38,43 @@ https://mesutakcan.blogspot.com
 		; -----------
     ; 1-Merkez noktasý týkla
     ; 2-Çýkýntý ayarla
-    ; 3-Nesne seç (Varsayýlan seçenek)
-    ; 4-Geri al
-    ; 5-Çýkýþ
+    ; 3-Geri al
+    ; 4-Çýkýþ
+		; 5-Nesne seç (Varsayýlan seçenek)
     (prompt (strcat "\nÇýkýntý:" (rtos cikinti))) ; Çýkýntý mesafesi
     (initget "Nesne Ayarla Geri Çýkýþ") ; Menü elemanlarý
-    (setq menutxt (strcat "[Nesne seç/çýkýntý Ayarla" (if (> eksensayisi 0) "/Geri al" "") "/Çýkýþ]"))
-    (setq menu-secimi ; Menü seçimi
-          (getpoint (strcat "\nMerkez noktasý belirle " menutxt " <Nesne seç>: "))
+    (setq menuTxt (strcat "[Nesne seç/çýkýntý Ayarla" (if (> eksenSayisi 0) "/Geri al" "") "/Çýkýþ]"))
+    (setq menuSecimi ; Menü seçimi
+          (getpoint (strcat "\nMerkez noktasý belirle " menuTxt " <Nesne seç>: "))
     )
 
     (cond 
       ;1-Merkez noktasý týklandý ise
       ;-----------------------------
-      ((= 'LIST (type menu-secimi)) ; Dönen deðer liste ise
-       (EksenCiz menu-secimi (getdist menu-secimi "\nEksen yarýçapý:") cikinti)
+      ((= 'LIST (type menuSecimi)) ; Dönen deðer liste ise
+       (EksenCiz menuSecimi (getdist menuSecimi "\nEksen yarýçapý:") cikinti doc)
+       (setq eksenSayisi (1+ eksenSayisi))
       )
 
       ;2-"Çýkýntý ayarla" seçildi ise
-      ((= menu-secimi "Ayarla") ; Dönen deðer "Ayarla" ise
-       ; Çýkýntý mesafesini ayarla
-       (setq cikinti
-        (cond 
-          ((getdist (strcat "\nÇýkýntý mesafesi <" (rtos (cond (cikinti) (3))) ">: ")))
-          (cikinti) ; Önceki deðer varken Enter
-          (3) ; Ýlk kullanýmda Enter
-        );cond
-       );setq
+      ((= menuSecimi "Ayarla") ; Dönen deðer "Ayarla" ise
+        ; Çýkýntý mesafesini ayarla
+        (setq yeniCikinti (getdist (strcat "\nÇýkýntý mesafesi <" (rtos cikinti) ">: ")))
+        (if yeniCikinti (setq cikinti yeniCikinti))
       )
 
       ;3-"Geri al" seçildi ise
       ; ---------------------
-      ((= menu-secimi "Geri")
+      ((= menuSecimi "Geri")
        (progn
          (repeat 2 (entdel (entlast))); Son iki çizgiyi sil
-         (setq eksensayisi (1- eksensayisi)); Eksen sayýsýný azalt
+         (setq eksenSayisi (1- eksenSayisi)); Eksen sayýsýný azalt
        )
       )
 
       ;4-"Çýkýþ" seçildi ise
       ; ------------------
-      ((= menu-secimi "Çýkýþ") (setq cikis T))
+      ((= menuSecimi "Çýkýþ") (setq cikis T))
 
       ;5-"Nesne seç" seçildi veya Enter'e basýldý ise
       ;---------------------------------------------
@@ -93,7 +87,8 @@ https://mesutakcan.blogspot.com
              (setq ent (ssname ss (setq n (1- n))) ; seçim listesindeki varlýk adý
                    edata (entget ent) ; Varlýk verileri. DXF bilgiler
              )
-             (EksenCiz (trans (cdr (assoc 10 edata)) ent 1) (cdr (assoc 40 edata)) cikinti)
+             (EksenCiz (trans (cdr (assoc 10 edata)) ent 1) (cdr (assoc 40 edata)) cikinti doc)
+             (setq eksenSayisi (1+ eksenSayisi))
            );repeat
          );progn
 
@@ -113,10 +108,11 @@ https://mesutakcan.blogspot.com
 ; mn: Merkez noktasý
 ; r: Yarýçap
 ; c: Çýkýntý mesafesi
-(defun EksenCiz (mn r c)  ; Merkez nokta, yarýçap, çýkýntý
+; d: Aktif belge
+(defun EksenCiz (mn r c d)  ; Merkez nokta, yarýçap, çýkýntý, doc
   (setq r (+ r c)) ; Çýkýntýyý yarýçapa ekle
   ; Eksenleri çiz
-	(vla-startundomark doc)
+	(vla-startundomark d)
   ; 0 ve 90 derece açýlarý için döngü
   (foreach aci (list 0 (/ pi 2))
     (entmake 
@@ -128,38 +124,37 @@ https://mesutakcan.blogspot.com
       );list
     );entmake
   );foreach
-	(vla-endundomark doc)
-  (setq eksensayisi (1+ eksensayisi)); Eksen sayýsýný artýr
+	(vla-endundomark d)
 );defun
 
 ; Katman Ekle
 ; --------------
 ; Belirtilen ad, çizgi tipi ve çizgi rengi ile yeni bir katman oluþturur.
-; katman-adi - Oluþturulacak katmanýn adý.
-; cizgi-tipi - Katmana atanacak çizgi tipi.
-; cizgi-rengi - Katmana atanacak renk.  
-(defun KatmanEkle (katman-adi cizgi-tipi cizgi-rengi) 
+; katmanAdi - Oluþturulacak katmanýn adý.
+; cizgiTipi - Katmana atanacak çizgi tipi.
+; cizgiRengi - Katmana atanacak renk.  
+(defun KatmanEkle (katmanAdi cizgiTipi cizgiRengi) 
   ; Çizgi tipini kontrol et
-  (if (not (tblsearch "LTYPE" cizgi-tipi))  ; Çizgi tipi yoksa
+  (if (not (tblsearch "LTYPE" cizgiTipi))  ; Çizgi tipi yoksa
     (progn 
-      (command "-linetype" "load" cizgi-tipi "acadiso.lin" "") ; Çizgi tipini yükle
-      (if (not (tblsearch "LTYPE" cizgi-tipi)) ; Çizgi tipi yüklenemediyse
-        (princ (strcat "\n" cizgi-tipi " çizgi tipi yüklenemedi."))
+      (command "-linetype" "load" cizgiTipi "acadiso.lin" "") ; Çizgi tipini yükle
+      (if (not (tblsearch "LTYPE" cizgiTipi)) ; Çizgi tipi yüklenemediyse
+        (princ (strcat "\n" cizgiTipi " çizgi tipi yüklenemedi."))
       );if
     );progn
   );if
   
   ; Katmaný kontrol et
-  (if (not (tblsearch "LAYER" katman-adi))  ; Katman yoksa
+  (if (not (tblsearch "LAYER" katmanAdi))  ; Katman yoksa
     (entmake  ; Katman yap
       (list 
         (cons 0 "LAYER") ; Katman
         (cons 100 "AcDbSymbolTableRecord")
         (cons 100 "AcDbLayerTableRecord")
         (cons 70 0) ; Katman durumu ON
-        (cons 2 katman-adi) ; Katman adý
-        (cons 6 cizgi-tipi) ; Çizgi tipi
-        (cons 62 cizgi-rengi) ; Çizgi rengi
+        (cons 2 katmanAdi) ; Katman adý
+        (cons 6 cizgiTipi) ; Çizgi tipi
+        (cons 62 cizgiRengi) ; Çizgi rengi
         (cons 370 -3) ; Çizgi kalýnlýðý. Default
       );list
     );entmake
