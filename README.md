@@ -20,24 +20,22 @@ AutoCAD komut satırına `APPLOAD` yazın, `EKSEN-CIZ.LSP` dosyasını seçip Lo
 AutoCAD Komut satırına `EKSEN` yazıp `Enter` tuşuna basın.
 
 ### Menü elemanları
-`EKSEN` komutu çalıştırıldığında menüde aşağıdaki seçenekler çıkar
-- Merkez noktası belirle
-- Nesne seç
-- Çıkıntı ayarla
-- Geri al
-- Çıkış
+`EKSEN` komutu çalıştırıldığında menüde aşağıdaki seçenekler çıkar\
+![](ss-2.png)
+
+- **Merkez noktası belirle**. Bir seçnek seçilmezse merkez noktası ardından eksen yarıçapı belirlenir. Belirlenen merkeze eksenler çizilir.
+- **Nesne seç**. Varsayılan seçenektir. `Enter` veya `Boşluk` ile de seçilebilir. Çember(ler) ve/veya yay(lar) seçilir. Seçimi tamamlamak için `Enter` tuşuna basılır. Seçilen nesnelere eksenler çizilir.
+- **çıkıntı Ayarla**. Başlangıç değeri `3` birimdir. Çıkıntı miktarı ayarlanbilir. Negatif değerler ters çıkıntı(girinti) oluşturur.
+- **Geri al**. Son çizilen dikey ve yatay ekseni iptal eder.
+- **Çıkış**. Program sonsuz döngü ile devam eder. Döngüden çıkmak için `Çıkış` seçeneğini seçin veya `ESC` tuşuna basın.
 
 ### Menü elamanını seçme
 - Komut satırında üzerinde tıklayarak
 - Menüdeki büyük harfi klavyeden girerek
 - Çizim alanında sağ tıklayıp menüden tıklayarak
 
-## Menü elemanlarının işlevleri
-- **Merkez noktası belirle**. Bir seçnek seçilmezse merkez noktası ardından eksen yarıçapı belirlenir. Belirlenen merkeze eksenler çizilir.
-- **Nesne seç**. Varsayılan seçenektir. `Enter` veya `Boşluk` ile de seçilebilir. Çember(ler) ve/veya yay(lar) seçilir. Seçimi tamamlamak için `Enter` tuşuna basılır. Seçilen nesnelere eksenler çizilir.
-- **Çıkıntı ayarla**. Başlangıç değeri `3` birimdir. Çıkıntı miktarı ayarlanbilir. Negatif değerler ters çıkıntı(girinti) oluşturur.
-- **Geri al**. Son çizilen dikey ve yatay ekseni iptal eder.
-- **Çıkış**. Program sonsuz döngü ile devam eder. Döngüden çıkmak için `Çıkış` seçeneğini seçin veya `ESC` tuşuna basın.
+## Video
+https://www.youtube.com/watch?v=TKF9yI4U02k
 
 ## Lisans
 Bu uygulama **Mesut Akcan** tarafından geliştirilmiştir. Kaynak belirtmeden paylaşılamaz. Ücretsizdir. Satılamaz.
