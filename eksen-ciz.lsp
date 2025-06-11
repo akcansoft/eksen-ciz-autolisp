@@ -5,9 +5,9 @@ Kullanýcý, nesne seçimi veya merkez noktasý belirleme ile eksen çizebilir.
 Son iþlem geri alýnabilir.
 
 12/12/2024 - Ýlk sürüm
-14/05/2025 - Son güncelleme
+11/06/2025 - Son güncelleme
 
-R14
+R15
 
 Mesut Akcan
 makcan@gmail.com
@@ -20,30 +20,34 @@ https://mesutakcan.blogspot.com
 (setq cikinti 3) ; Çýkýntý mesafesi
 
 (defun c:EKSEN (/ cikis doc edata eksenSayisi ent menuSecimi menuTxt n ss yeniCikinti) 
-  (setq doc (vla-get-activedocument (vlax-get-acad-object)))  ; aktif çizim
-  ; Çalýþma sýrasýnda hata olursa
-  (defun *error* (msg) 
-    (vla-endundomark doc)
-    (if msg (princ (strcat "\nHata: " msg)))
-    (princ)
+  (setq
+    doc (vla-get-activedocument (vlax-get-acad-object)) ; aktif çizim
+    undoMark nil ; Geri alma iþareti
   )
+  ; Çalýþma sýrasýnda hata olursa
+  (defun *error* (msg)
+    (if undoMark (vla-endundomark doc)) ; UndoMark baþlatýldýysa bitir
+    (if (and msg (/= msg "Function cancelled"))
+      (princ (strcat "\nHata: " msg))
+    )
+    (princ)
+  ) 
 
   ; Eksen katmaný yoksa ekle
   (KatmanEkle "EKSEN" "CENTER" 4) ; Katman adý, çizgi tipi ve çizgi rengi
   (setq eksenSayisi 0) ; Eksen sayýsý
   
   ; Çýkýþ seçilene kadar sonsuz döngü
-  (while (null cikis) 
+  (while T 
     ; Seçenekler:
 		; -----------
     ; 1-Merkez noktasý týkla
     ; 2-Çýkýntý ayarla
     ; 3-Geri al
-    ; 4-Çýkýþ
-		; 5-Nesne seç (Varsayýlan seçenek)
+		; 4-Nesne seç (Varsayýlan seçenek)
     (prompt (strcat "\nÇýkýntý:" (rtos cikinti))) ; Çýkýntý mesafesi
-    (initget "Nesne Ayarla Geri Çýkýþ") ; Menü elemanlarý
-    (setq menuTxt (strcat "[Nesne seç/çýkýntý Ayarla" (if (> eksenSayisi 0) "/Geri al" "") "/Çýkýþ]"))
+    (initget "Nesne Çýkýntý Geri") ; Menü elemanlarý
+    (setq menuTxt (strcat "[Nesne seç/Çýkýntý" (if (> eksenSayisi 0) "/Geri al" "") "]"))
     (setq menuSecimi ; Menü seçimi
           (getpoint (strcat "\nMerkez noktasý belirle " menuTxt " <Nesne seç>: "))
     )
@@ -56,15 +60,16 @@ https://mesutakcan.blogspot.com
        (setq eksenSayisi (1+ eksenSayisi))
       )
 
-      ;2-"Çýkýntý ayarla" seçildi ise
-      ((= menuSecimi "Ayarla") ; Dönen deðer "Ayarla" ise
+      ;2-"Çýkýntý" seçildi ise
+			;------------------------------
+      ((= menuSecimi "Çýkýntý") ; Dönen deðer "Çýkýntý" ise
         ; Çýkýntý mesafesini ayarla
         (setq yeniCikinti (getdist (strcat "\nÇýkýntý mesafesi <" (rtos cikinti) ">: ")))
         (if yeniCikinti (setq cikinti yeniCikinti))
       )
 
       ;3-"Geri al" seçildi ise
-      ; ---------------------
+      ; ----------------------
       ((= menuSecimi "Geri")
        (progn
          (repeat 2 (entdel (entlast))); Son iki çizgiyi sil
@@ -72,11 +77,7 @@ https://mesutakcan.blogspot.com
        )
       )
 
-      ;4-"Çýkýþ" seçildi ise
-      ; ------------------
-      ((= menuSecimi "Çýkýþ") (setq cikis T))
-
-      ;5-"Nesne seç" seçildi veya Enter'e basýldý ise
+      ;4-"Nesne seç" seçildi veya Enter'e basýldý ise
       ;---------------------------------------------
       (T
        (if (setq ss (ssget '((0 . "CIRCLE,ARC"))))  ; Yay veya çember seç
@@ -110,9 +111,13 @@ https://mesutakcan.blogspot.com
 ; c: Çýkýntý mesafesi
 ; d: Aktif belge
 (defun EksenCiz (mn r c d)  ; Merkez nokta, yarýçap, çýkýntý, doc
-  (setq r (+ r c)) ; Çýkýntýyý yarýçapa ekle
-  ; Eksenleri çiz
-	(vla-startundomark d)
+  (vla-startundomark d)
+  (setq
+    r (+ r c) ; Çýkýntýyý yarýçapa ekle
+    undoMark T ; UndoMark baþlatýldý
+  )
+  ; Dikey ve yatay eksenleri çiz
+  ;-----------------------------
   ; 0 ve 90 derece açýlarý için döngü
   (foreach aci (list 0 (/ pi 2))
     (entmake 
@@ -125,10 +130,11 @@ https://mesutakcan.blogspot.com
     );entmake
   );foreach
 	(vla-endundomark d)
+  (setq undoMark nil)
 );defun
 
 ; Katman Ekle
-; --------------
+; -----------
 ; Belirtilen ad, çizgi tipi ve çizgi rengi ile yeni bir katman oluþturur.
 ; katmanAdi - Oluþturulacak katmanýn adý.
 ; cizgiTipi - Katmana atanacak çizgi tipi.
@@ -160,4 +166,7 @@ https://mesutakcan.blogspot.com
     );entmake
   );if
 );defun
+
+(princ "\nUygulama yüklendi. Komut: EKSEN")
+(princ)
 ;--
